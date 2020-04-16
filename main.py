@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(description='Build GFA v1 from MSA given in FAS
 parser.add_argument("-f", "--in_msa", metavar="MSA_PATH", dest="in_msa",
                     default=None, type=str, help="Input MSA in FASTA format")
 
-parser.add_argument("-o", "--out", metavar="OUT_GFA", dest="out_fasta",
+parser.add_argument("-o", "--out", metavar="OUT_GFA", dest="out_gfa",
                     default="gfa_out.gfa", type=str, help="Output GFA name/path")
 
 parser.add_argument("-n", "--seq_name_tsv", metavar="SEQ_NAMES", dest="seq_names",
@@ -72,8 +72,8 @@ if __name__ == "__main__":
     # building graph
     graph = msa_graph(sequences, seq_names)
     graph.colors = seq_names
-    pdb.set_trace()
     graph.compact()
     graph.sort()  # topological sorting
     graph.add_paths()  # adds paths to graph
+    pdb.set_trace()
     write_gfa(graph, args.out_gfa)  # outputting

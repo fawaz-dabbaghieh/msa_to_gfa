@@ -12,12 +12,11 @@ def write_gfa(graph, gfa_path, colored=False):
     """
     # maybe a dictionary of nodes and their classes
     # then a function that reads these colors and make an upset plot or something
-    k = graph.k
     nodes = graph.nodes
     if os.path.exists(gfa_path):
         logging.warning("overwriting {} file".format(gfa_path))
 
-    overlap = str(k-1) + "M"
+    overlap = "0M"
     f = open(gfa_path, "w+")
 
     for node in nodes.values():
@@ -34,18 +33,21 @@ def write_gfa(graph, gfa_path, colored=False):
             f.write(edge + "\n")
 
     if len(graph.paths) != 0:
-        for p_name in graph.paths.keys():
-            segment = []
-            for n in graph.paths[p_name]:
-                if n.id in graph.nodes:
-                    segment.append(n.id)
-            segment = ",".join([str(x) + "+" for x in segment])
-            # pdb.set_trace()
-            # segment = ",".join([str(x.id) + "+" for x in graph.paths[p_name]])
-            overlaps = "0M," * (len(graph.paths[p_name]) - 1)
-            overlaps = overlaps[0:len(overlaps) - 1]
-            out_path = "\t".join(["P", p_name, segment, overlaps])
-            # pdb.set_trace()
-            f.write(out_path + "\n")
+        for p_name, nodes_in_path in graph.paths.items():
+            path = [p_name]
+            n_nodes = len(nodes_in_path)
+            path.append("+,".join([str(x) for x in nodes_in_path]))
+            path.append(",".join(["0M"]*n_nodes))
+            path = "\t".join(path)
+            # segment = []
+            # for n in graph.paths[p_name]:
+            #     if n.id in graph.nodes.keys():
+            #         segment.append(n.id)
+            # segment = ",".join([str(x) + "+" for x in segment])
+            # overlaps = "0M," * (len(graph.paths[p_name]) - 1)
+            # overlaps = overlaps[0:len(overlaps) - 1]
+            # out_path = "\t".join(["P", p_name, segment, overlaps])
+            # # pdb.set_trace()
+            f.write(path + "\n")
 
     f.close()

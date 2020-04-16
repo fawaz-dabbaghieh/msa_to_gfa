@@ -45,4 +45,12 @@ class Graph:
         compact_graph(self, )
 
     def add_paths(self):
-        pass
+        if not self.sorted:
+            self.sort()
+
+        for n in self.sorted:
+            for color in self.nodes[n].colors:
+                if color not in self.paths:
+                    self.paths[color] = [n]
+                else:
+                    self.paths[color].append(n)

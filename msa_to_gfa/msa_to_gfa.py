@@ -25,6 +25,7 @@ def sync_lists(nodes, current, previous):
     :param previous: a list with nodes in the previous column
     """
 
+    # todo the same node shouldn't have a self loop
     for i in range(len(current)):  # they both have the same size
         if (current[i] == 0) and (previous[i] != 0):
             # in case there was an amino acid in some sequence
@@ -34,9 +35,11 @@ def sync_lists(nodes, current, previous):
             current[i] = previous[i]
 
         # adding edges
-        if (current[i] != 0) and (previous[i] != 0):
+        elif (current[i] != 0) and (previous[i] != 0):
             nodes[previous[i]].add_child(nodes[current[i]])
 
+        else:
+            pass
         # previous is current now and we have a new current
         # previous = current
         # current = [0] * len(previous)
@@ -102,6 +105,8 @@ def msa_graph(sequences, seq_names):
                     node_id += 1
                     # previous_nodes[i] = node
 
+    # syncing last column
+    sync_lists(nodes, current_nodes, previous_nodes)
     # for l in lists_of_nodes:
     #     for idx in range(len(l) - 1):
     #         if l[idx+1] not in l[idx].out_nodes:

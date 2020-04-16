@@ -5,7 +5,7 @@ def copy_connections(graph):
     """
     returns a dictionary with a copy of the graph's edges and nodes
 
-    :param garph: a graph object
+    :param graph: a graph object
     :return nodes: dictionary of node objects and their connections
     """
     nodes = dict()
