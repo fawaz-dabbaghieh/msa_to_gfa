@@ -34,7 +34,7 @@ def write_gfa(graph, gfa_path, colored=False):
 
     if len(graph.paths) != 0:
         for p_name, nodes_in_path in graph.paths.items():
-            path = [p_name]
+            path = ["P", p_name]
             n_nodes = len(nodes_in_path)
             path.append("+,".join([str(x) for x in nodes_in_path]))
             path.append(",".join(["0M"]*n_nodes))

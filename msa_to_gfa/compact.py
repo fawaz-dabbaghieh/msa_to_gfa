@@ -4,7 +4,6 @@ def merge_end(nodes, n):
 
     :param nodes: a dictionary of node objects
     :param n: the node to try to merge its end
-    :param k: the length of the kmer
     """
 
     child = list(nodes[n].out_nodes)[0]

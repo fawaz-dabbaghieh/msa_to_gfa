@@ -7,7 +7,6 @@ import logging
 from msa_to_gfa.fasta_reader import read_fasta
 from msa_to_gfa.msa_to_gfa import msa_graph
 from msa_to_gfa.write_gfa import write_gfa
-import pdb
 
 
 parser = argparse.ArgumentParser(description='Build GFA v1 from MSA given in FASTA format')
@@ -55,8 +54,8 @@ if __name__ == "__main__":
     if args.seq_names:
         if os.path.exists(args.seq_names):
             with open(args.seq_names) as in_file:
-                for l in in_file:
-                    line = l.strip().split("\t")
+                for raw_l in in_file:
+                    line = raw_l.strip().split("\t")
                     if line[0] not in sequences:
                         logging.error("The sequence {} in file {} does not exist in the "
                                       "fasta file {} provided".format(line[0], args.seq_names, args.in_msa))
@@ -75,5 +74,4 @@ if __name__ == "__main__":
     graph.compact()
     graph.sort()  # topological sorting
     graph.add_paths()  # adds paths to graph
-    pdb.set_trace()
     write_gfa(graph, args.out_gfa)  # outputting
