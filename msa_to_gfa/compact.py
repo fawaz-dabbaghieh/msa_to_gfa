@@ -1,4 +1,4 @@
-def merge_end(nodes, n, k):
+def merge_end(nodes, n):
     """
     merges the end of a node if possible
 
@@ -21,7 +21,8 @@ def merge_end(nodes, n, k):
 
         # updating sequence of n
         # I am assuming no overlaps here
-        nodes[n].seq += child.seq[k-1:]
+        # nodes[n].seq += child.seq[k-1:]
+        nodes[n].seq += child.seq
 
         # updating the information in children of child
         # in nodes of child's child need to be updated
@@ -43,7 +44,6 @@ def compact_graph(graph):
 
     :param graph: a graph object
     """
-    k = graph.k
     list_of_nodes = list(graph.nodes.keys())
 
     for n in list_of_nodes:
@@ -51,7 +51,7 @@ def compact_graph(graph):
             while True:
                 # only one child (maybe can be merged)
                 if len(graph.nodes[n].out_nodes) == 1:
-                    if not merge_end(graph.nodes, n, k):
+                    if not merge_end(graph.nodes, n):
                         break
                 else:
                     break

@@ -33,9 +33,13 @@ def read_fasta(fasta_file_path):
             if len(seqs) != 0:  # there was a sequence before
                 sequences[seq_name] = "".join(seqs)
                 seq_name = line[1:]
+                seqs = []
             else:
                 seq_name = line[1:]
         else:
             seqs.append(line)
+
+    if seqs:
+        sequences[seq_name] = "".join(seqs)
 
     return sequences

@@ -4,9 +4,11 @@ import os
 import time
 import argparse
 import logging
-from fasta_reader import read_fasta
-from msa_to_gfa import msa_graph
-from write_gfa import write_gfa
+from msa_to_gfa.fasta_reader import read_fasta
+from msa_to_gfa.msa_to_gfa import msa_graph
+from msa_to_gfa.write_gfa import write_gfa
+import pdb
+
 
 parser = argparse.ArgumentParser(description='Build GFA v1 from MSA given in FASTA format')
 
@@ -49,8 +51,8 @@ if __name__ == "__main__":
         sys.exit()
 
     # reading sequence names if provided
+    seq_names = dict()
     if args.seq_names:
-        seq_names = dict()
         if os.path.exists(args.seq_names):
             with open(args.seq_names) as in_file:
                 for l in in_file:
@@ -63,8 +65,14 @@ if __name__ == "__main__":
         else:
             logging.error("File {} provided as sequence names tsv does not exist".format(args.seq_names))
 
+    else:
+        for key in sequences.keys():
+            seq_names[key] = key
+
     # building graph
-    graph = msa_graph(sequences)
+    graph = msa_graph(sequences, seq_names)
+    graph.colors = seq_names
+    pdb.set_trace()
     graph.compact()
     graph.sort()  # topological sorting
     graph.add_paths()  # adds paths to graph

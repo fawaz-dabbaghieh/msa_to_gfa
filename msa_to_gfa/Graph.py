@@ -1,7 +1,8 @@
 import logging
 import sys
-from topological_sorting import top_sorting
-from compact import compact_graph
+from .topological_sorting import top_sorting
+from .compact import compact_graph
+
 
 class Graph:
     __slots__ = ['nodes', 'paths', 'sorted', 'colors']
@@ -22,6 +23,11 @@ class Graph:
             print("Node {} is not in the graph")
             return None
 
+    def __str__(self):
+        for n in self.nodes.values():
+            for nn in n.out_nodes:
+                print("{} {} --> {} {}".format(n.id, n.seq, nn.seq, nn.id))
+
     def sort(self):
         if not self.sorted:
             self.sorted = top_sorting(self)
@@ -36,7 +42,7 @@ class Graph:
             pass
 
     def compact(self):
-        compact_graph(self)
+        compact_graph(self, )
 
     def add_paths(self):
         pass

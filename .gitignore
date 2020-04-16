@@ -9,6 +9,11 @@ __pycache__/
 # pycharm stuff
 .idea/
 
+# random
+*.gfa
+*.fasta
+*.fa
+*.aln
 # Distribution / packaging
 .Python
 build/
