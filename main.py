@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     # Log file stuff
     if not args.log_file:
-        log_file = "log_" + str(time.clock_gettime(1)).split(".")[0] + ".log"
+        log_file = "out_log.log"
     else:
         log_file = args.log_file
 
@@ -69,9 +69,15 @@ if __name__ == "__main__":
             seq_names[key] = key
 
     # building graph
+    logging.info("constructing graph...")
     graph = msa_graph(sequences, seq_names)
     graph.colors = seq_names
+    logging.info("compacting linear paths in graph...")
     graph.compact()
+    logging.info("sorting the graph toplogocially...")
     graph.sort()  # topological sorting
+    logging.info("adding paths to graph...")
     graph.add_paths()  # adds paths to graph
+    logging.info("writing graph...")
     write_gfa(graph, args.out_gfa)  # outputting
+    logging.info("finished...")

@@ -42,4 +42,14 @@ def read_fasta(fasta_file_path):
     if seqs:
         sequences[seq_name] = "".join(seqs)
 
+    # check if all sequences have the same length
+    seq_len = 0
+    for seq_name, seq in sequences.items():
+        if seq_len == 0:
+            seq_len = len(seq)
+        elif len(seq) != seq_len:
+            logging.error("Sequence {} has a different length, abort".format(seq_name))
+        else:
+            continue
+
     return sequences

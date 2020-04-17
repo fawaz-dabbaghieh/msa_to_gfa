@@ -13,7 +13,7 @@ class Node:
         self.colors = set()
 
     def __key(self):
-        return self.seq
+        return self.id
 
     def __hash__(self):
         return hash(self.__key())

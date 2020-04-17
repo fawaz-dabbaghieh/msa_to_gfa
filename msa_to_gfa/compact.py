@@ -1,3 +1,6 @@
+import pdb
+
+
 def merge_end(nodes, n):
     """
     merges the end of a node if possible
@@ -26,7 +29,10 @@ def merge_end(nodes, n):
         # updating the information in children of child
         # in nodes of child's child need to be updated
         for nn in child.out_nodes:
-            nn.in_nodes.remove(child)
+            try:
+                nn.in_nodes.remove(child)
+            except KeyError:
+                pdb.set_trace()
             nn.in_nodes.add(nodes[n])
 
         # remove the merged node
@@ -44,7 +50,6 @@ def compact_graph(graph):
     :param graph: a graph object
     """
     list_of_nodes = list(graph.nodes.keys())
-
     for n in list_of_nodes:
         if n in graph.nodes:
             while True:

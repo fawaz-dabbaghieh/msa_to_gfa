@@ -37,6 +37,7 @@ def write_gfa(graph, gfa_path, colored=False):
             path = ["P", p_name]
             n_nodes = len(nodes_in_path)
             path.append("+,".join([str(x) for x in nodes_in_path]))
+            path[-1] += "+"
             path.append(",".join(["0M"]*n_nodes))
             path = "\t".join(path)
             # segment = []
