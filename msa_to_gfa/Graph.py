@@ -2,6 +2,7 @@ import logging
 import sys
 from .topological_sorting import top_sorting
 from .compact import compact_graph
+import json
 
 
 class Graph:
@@ -54,3 +55,10 @@ class Graph:
                     self.paths[color] = [n]
                 else:
                     self.paths[color].append(n)
+
+    def nodes_info(self, output_file):
+        out_file = open(output_file, "w")
+        for n in self.nodes.values():
+            node_info = {"id": n.id, "colors": list(n.colors), "seq": n.seq}
+            out_file.write(json.dumps(node_info) + "\n")
+        out_file.close()

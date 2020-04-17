@@ -4,7 +4,8 @@ or [bandage](https://rrwick.github.io/Bandage/) or any other avialble GFA visual
 
 The following options are available from calling main:
 ```
-usage: main.py [-h] [-f MSA_PATH] [-o OUT_GFA] [-n SEQ_NAMES] [--log LOG_FILE]
+usage: main.py [-h] [-f MSA_PATH] [-o OUT_GFA] [-n SEQ_NAMES] [-c COLORS]
+               [--log LOG_FILE]
 
 Build GFA v1 from MSA given in FASTA format
 
@@ -17,7 +18,10 @@ optional arguments:
   -n SEQ_NAMES, --seq_name_tsv SEQ_NAMES
                         A tsv with two columns, first is sequence names,
                         second is a shortened or abbreviated name
+  -c COLORS, --nodes_info COLORS
+                        Output JSON file with nodes information
   --log LOG_FILE        Log file name/path. Default = out_log.log
+
 ```
 
 You simply need to provide the MSA in a FASTA format, the output file location. And in case the sequence names in the FASTA file 
@@ -40,5 +44,9 @@ seq1    s1
 seq2    s2
 seq3    s3
 ```
+
+The option `-c, --nodes_info` will output a json file with each line a dictionary with
+node id, node sequence, and the sequences associated with that node. Maybe it can help identify 
+highly conserved regions (the node "colors" can help in this for example).
 The graph of the previous sequences would look like
 ![alt text](figures/drawing-1.png)

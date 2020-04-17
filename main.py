@@ -21,6 +21,9 @@ parser.add_argument("-n", "--seq_name_tsv", metavar="SEQ_NAMES", dest="seq_names
                     default=None, type=str, help="A tsv with two columns, first is sequence names"
                                                  ", second is a shortened or abbreviated name")
 
+parser.add_argument("-c", "--nodes_info", metavar="COLORS", dest="nodes_dict",
+                    default=None, type=str, help="Output JSON file with nodes information")
+
 parser.add_argument("--log", metavar="LOG_FILE", dest="log_file",
                     default=None, type=str, help="Log file name/path. Default = out_log.log")
 args = parser.parse_args()
@@ -80,4 +83,7 @@ if __name__ == "__main__":
     graph.add_paths()  # adds paths to graph
     logging.info("writing graph...")
     write_gfa(graph, args.out_gfa)  # outputting
+    if args.nodes_dict:
+        logging.info("writing nodes info json file...")
+        graph.nodes_info(args.nodes_dict)
     logging.info("finished...")
