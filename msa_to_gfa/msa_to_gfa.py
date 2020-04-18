@@ -1,6 +1,39 @@
 from .Node import Node
 from .Graph import Graph
 
+"""
+The idea here is simple
+Let's take the following small examle
+
+01234567
+-MEPTPEQ
+---T--MA
+MSETQSTQ
+
+At column 0 we have two lists with the size == number of sequences
+One is the previous columns (called previous_nodes) and current columns (current_nodes)
+At first they are both empty, but then current is filled with [0,0,1]
+where 1 is the key to the node constructed with sequence M
+
+In the next iteration I sync previous and current. There's nothing to do here
+
+Next, previous is [0,0,1] and current is [2,0,3] (2 is M and 3 is S from column 1)
+when syncing, M will get connected to S. And current becomes previous
+
+Let's say we are in column 3, we use the knowledge in already_seen to not make two T nodes
+But only one with the information that T comes from both seq2 and seq3
+
+In column 4, current is [8,0,9] and previous is [6,7,7] (T has id 7)
+6 which is p gets connected to 8 which is T
+T which 7 is connected to Q which is 9
+We see that the middle T has a gap next, so we move it to current and current
+become [8,7,9], the idea is that because of the gap, I keep pushing the previous letter or node
+Until there's no more gap in column 6 where we have M now, and T is connected to M
+
+So it's just previous and current columns following each other, and I keep connecting nodes
+Or pushing the nodes where there's a gap until there isn't a gap.
+"""
+
 
 def sync_lists(nodes, current, previous):
     """

@@ -76,12 +76,17 @@ if __name__ == "__main__":
     graph = msa_graph(sequences, seq_names)
     graph.colors = seq_names
     logging.info("compacting linear paths in graph...")
+
+    # Compacting just merges stretches of single nodes together
     graph.compact()
     logging.info("sorting the graph toplogocially...")
+
+    # I use topological sorting to write the paths in order
     graph.sort()  # topological sorting
     logging.info("adding paths to graph...")
     graph.add_paths()  # adds paths to graph
     logging.info("writing graph...")
+
     write_gfa(graph, args.out_gfa)  # outputting
     if args.nodes_dict:
         logging.info("writing nodes info json file...")
