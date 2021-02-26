@@ -13,6 +13,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -f MSA_PATH, --in_msa MSA_PATH
                         Input MSA in FASTA format
+  --compact             If this give, the graph will be compacted before writing
   -o OUT_GFA, --out OUT_GFA
                         Output GFA name/path
   -n SEQ_NAMES, --seq_name_tsv SEQ_NAMES
