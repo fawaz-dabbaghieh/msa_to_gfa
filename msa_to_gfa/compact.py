@@ -12,7 +12,7 @@ def merge_end(nodes, n):
     child = list(nodes[n].out_nodes)[0]
 
     # if child has one parent, it can be merged
-    if len(child.in_nodes) == 1:
+    if (len(child.in_nodes) == 1) and (nodes[n].colors == child.colors):
         # adding the new children to n because
         # n --> child --> child's_child
         # compact

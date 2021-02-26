@@ -14,6 +14,9 @@ parser = argparse.ArgumentParser(description='Build GFA v1 from MSA given in FAS
 parser.add_argument("-f", "--in_msa", metavar="MSA_PATH", dest="in_msa",
                     default=None, type=str, help="Input MSA in FASTA format")
 
+parser.add_argument("--compact", dest="compact",
+                    action="store_true", help="If this give, the graph will be compacted before writing")
+
 parser.add_argument("-o", "--out", metavar="OUT_GFA", dest="out_gfa",
                     default="gfa_out.gfa", type=str, help="Output GFA name/path")
 
@@ -75,12 +78,13 @@ if __name__ == "__main__":
     logging.info("constructing graph...")
     graph = msa_graph(sequences, seq_names)
     graph.colors = seq_names
-    logging.info("compacting linear paths in graph...")
 
-    # Compacting just merges stretches of single nodes together
-    graph.compact()
+    if args.compact:
+        logging.info("compacting linear paths in graph...")
+        # Compacting just merges stretches of single nodes together
+        graph.compact()
+
     logging.info("sorting the graph toplogocially...")
-
     # I use topological sorting to write the paths in order
     graph.sort()  # topological sorting
     logging.info("adding paths to graph...")
