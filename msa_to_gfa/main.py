@@ -32,7 +32,7 @@ parser.add_argument("--log", metavar="LOG_FILE", dest="log_file",
 args = parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
 
     if len(sys.argv) < 2:
         print("You need to provide inputs. try -h or --help for help")
@@ -96,3 +96,7 @@ if __name__ == "__main__":
         logging.info("writing nodes info json file...")
         graph.nodes_info(args.nodes_dict)
     logging.info("finished...")
+
+
+if __name__ == "__main__":
+    main()
