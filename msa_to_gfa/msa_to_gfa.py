@@ -58,7 +58,6 @@ def sync_lists(nodes, current, previous):
     :param previous: a list with nodes in the previous column
     """
 
-    # todo the same node shouldn't have a self loop
     for i in range(len(current)):  # they both have the same size
         if (current[i] == 0) and (previous[i] != 0):
             # in case there was an amino acid in some sequence
@@ -81,6 +80,9 @@ def sync_lists(nodes, current, previous):
 def msa_graph(sequences, seq_names):
     """
     build graph from MSA
+
+    In case someone wanted to shorten the actual sequence names
+    the seq_names dictionary is then used, otherwise, the same seq names in FASTA are used
 
     :param sequences: sequences dictionary
     :param seq_names: a dictionary of name of sequence in fasta file and potential shorter name

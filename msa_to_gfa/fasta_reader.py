@@ -48,7 +48,8 @@ def read_fasta(fasta_file_path):
         if seq_len == 0:
             seq_len = len(seq)
         elif len(seq) != seq_len:
-            logging.error("Sequence {} has a different length, abort".format(seq_name))
+            logging.error("Sequence {} has a different length".format(seq_name))
+            sys.exit(1)
         else:
             continue
 

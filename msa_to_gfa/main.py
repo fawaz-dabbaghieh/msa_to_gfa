@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import sys
 import os
-import time
 import argparse
 import logging
 from msa_to_gfa.fasta_reader import read_fasta
@@ -9,13 +8,14 @@ from msa_to_gfa.msa_to_gfa import msa_graph
 from msa_to_gfa.write_gfa import write_gfa
 
 
-parser = argparse.ArgumentParser(description='Build GFA v1 from MSA given in FASTA format')
+parser = argparse.ArgumentParser(description='Build GFA v1 from MSA')
 
 parser.add_argument("-f", "--in_msa", metavar="MSA_PATH", dest="in_msa",
                     default=None, type=str, help="Input MSA in FASTA format")
 
 parser.add_argument("--compact", dest="compact",
-                    action="store_true", help="If this give, the graph will be compacted before writing")
+                    action="store_true",
+                    help="If this give, the graph will be compacted before writing")
 
 parser.add_argument("-o", "--out", metavar="OUT_GFA", dest="out_gfa",
                     default="gfa_out.gfa", type=str, help="Output GFA name/path")
@@ -28,7 +28,7 @@ parser.add_argument("-c", "--nodes_info", metavar="COLORS", dest="nodes_dict",
                     default=None, type=str, help="Output JSON file with nodes information")
 
 parser.add_argument("--log", metavar="LOG_FILE", dest="log_file",
-                    default=None, type=str, help="Log file name/path. Default = out_log.log")
+                    default="log.log", type=str, help="Log file name/path. Default = out_log.log")
 args = parser.parse_args()
 
 
@@ -48,7 +48,6 @@ def main():
                         format='[%(asctime)s] %(message)s',
                         level=getattr(logging, "INFO"))
 
-    # taking fasta file
     if args.in_msa:
         sequences = read_fasta(args.in_msa)
     else:
@@ -65,10 +64,12 @@ def main():
                     if line[0] not in sequences:
                         logging.error("The sequence {} in file {} does not exist in the "
                                       "fasta file {} provided".format(line[0], args.seq_names, args.in_msa))
+                        sys.exit(1)
                     else:
                         seq_names[line[0]] = line[1]
         else:
             logging.error("File {} provided as sequence names tsv does not exist".format(args.seq_names))
+            sys.exit(1)
 
     else:
         for key in sequences.keys():
