@@ -3,6 +3,27 @@ Is a tool to turn MSA to GFA v1 with embedded paths corrisponding to groups orig
 or [bandage](https://rrwick.github.io/Bandage/) or any other avialble GFA visualization tools out there.
 
 The tool is split into two separate steps, building the graph, and adding the paths.
+## Global optional arguments
+Before supplying one of the subcommands, the tool takes two general arguments
+```
+usage: test_main.py [-h] [--log LOG_FILE] [--dir OUTDIR] {build_graph,add_paths} ...
+
+Build GFA v1 from MSA
+
+Subcommands:
+  {build_graph,add_paths}
+                        Available subcommands
+    build_graph         Command for building the GFA from a given MSA
+    add_paths           Add paths to the graph that was built
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --log LOG_FILE        Log file name/path. Default = out_log.log
+  --dir OUTDIR          Output directory where to put the output files, default: .
+
+```
+- `--log` name of out log file, default is `log_file.log`
+- `--dir` output directory for outputs, if this is specified then you don't need to specify full path for outputs, just the name of file and this directory path will be used.
 
 ## Building the Graph
 The following options are available for this step when calling `msa_to_gfa biuld_graph` subcommand:
@@ -27,7 +48,8 @@ optional arguments:
 ```
 Required arguments here are:
 - `-f, --in_msa` for input MSA in FASTA format
-- `-o, --out` for the path/name of output GFA.
+- `-o, --out` the name of the output graph file, if `--dir` is specified, then you do not need to give the full path, just a name and the directory you gave will be used.
+
 Other arguments:
 - `--compact` which is recommended to compact linear stretches of nodes in the graph
 - `-n, --seq_name_tsv` which is a TSV file with two columns, first column is the original fasta sequence ids without the ">" character, and the second column is a shorter name for the same sequences, in case the user wants to use abbreviations or a smaller sequence ids for the sequences. E.g:

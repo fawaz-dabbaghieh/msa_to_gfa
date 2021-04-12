@@ -18,7 +18,10 @@ parser._positionals.title = 'Subcommands'
 
 
 parser.add_argument("--log", metavar="LOG_FILE", dest="log_file",
-                          default="log.log", type=str, help="Log file name/path. Default = out_log.log")
+                    default="log.log", type=str, help="Log file name/path. Default = out_log.log")
+
+parser.add_argument("--dir", metavar="OUTDIR", dest="out_dir",
+                    default=".", type=str, help="Output directory where to put the output files, default: .")
 
 ########################## Constructing GFA from MSA ###############################
 gfa_from_msa = subparsers.add_parser("build_graph", help="Command for building the GFA from a given MSA")
@@ -31,7 +34,7 @@ gfa_from_msa.add_argument("--compact", dest="compact",
                           help="If this give, the graph will be compacted before writing")
 
 gfa_from_msa.add_argument("-o", "--out", metavar="OUT_GFA", dest="out_gfa",
-                          default="gfa_out.gfa", type=str, help="Output GFA name/path")
+                          default="gfa_out.gfa", type=str, help="Output GFA name, default: gfa_out.gfa")
 
 # parser.add_argument("--all_paths", dest="all_paths",
 #                     action="store_true",
@@ -64,7 +67,6 @@ args = parser.parse_args()
 
 
 def main():
-    ##################################################### MSA to GFA section
 
     if len(sys.argv) < 2:
         print("You need to provide inputs. try -h or --help for help")
@@ -83,8 +85,15 @@ def main():
                         format='[%(asctime)s] %(message)s',
                         level=getattr(logging, "INFO"))
 
+    if not os.path.exists(args.out_dir):
+        print("Error! Please check the log file...")
+        logging.error(f"The directory {args.out_dir} provided does not exist")
+        sys.exit()
+
     # putting arguments in log file
     logging.info(" ".join(["argument given:"] + sys.argv))
+
+    ##################################################### MSA to GFA section
     if args.subcommands == "build_graph":
         if not args.in_msa:
             print("Error! Please check the log file...")
@@ -143,25 +152,34 @@ def main():
         logging.info("sorting the graph toplogocially...")
         # I use topological sorting to write the paths in order
         graph.sort()  # topological sorting
-        output_file = args.out_gfa.split(".")[0] + ".json"
+        output_groups_file = args.out_gfa.split(".")[0] + ".json"
+        if len(output_groups_file.split(os.path.sep)) > 1:
+            pass
+        else:
+            output_groups_file = os.path.join(args.out_dir, output_groups_file)
+
+        # outputting groups info
         logging.info("outputting paths and groups as a JSON file...")
-        graph.output_groups(output_file)  # adds paths to graph
+        graph.output_groups(output_groups_file)  # adds paths to graph
         logging.info("writing graph...")
 
-        write_gfa(graph, args.out_gfa)  # outputting
+        # outputting graph
+        if len(args.out_gfa.split(os.path.sep)) > 1:
+            out_gfa = args.out_gfa
+        else:
+            out_gfa = os.path.join(args.out_dir, args.out_gfa)
+        write_gfa(graph, out_gfa)
+
+        # outputting nodes info
         if args.nodes_dict:
             logging.info("writing nodes info json file...")
-            graph.nodes_info(args.nodes_dict)
+            if len(args.nodes_dict.split(os.path.sep)) > 1:
+                nodes_info_file = args.nodes_dict
+            else:
+                nodes_info_file = os.path.join(args.out_dir, args.nodes_dict)
+            graph.nodes_info(nodes_info_file)
 
     ##################################################### paths section
-
-    # todo: Either do some mappings between paths and output some kind of results
-    #    would be interesting to have some score and have some matrix with which paths are most similar
-    #    Maybe also have a report showing how two paths differ and at which bubbles
-    #    so I can utilize BubbleGun as well :)
-    #    2- add the general option of having an output dir where all results are deposited there
-    #    3- also output a tsv file with group id in first column and some separator
-
     if args.subcommands == "add_paths":
 
         if args.gfa is not None:
@@ -225,6 +243,10 @@ def main():
                 logging.error(f"The file {args.some_groups} provided does not exist...")
                 sys.exit(1)
 
+        if len(out_graph_name.split(os.path.sep)) > 1:
+            pass
+        else:
+            out_graph_name = os.path.join(args.out_dir, out_graph_name)
         write_gfa(in_graph, out_graph_name)
 
     logging.info("finished...")
