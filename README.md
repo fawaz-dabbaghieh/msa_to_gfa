@@ -1,13 +1,14 @@
 # MSA to GFA
-Small python program to turn MSA to GFA v1 with paths of original sequences, it can be then visualized with [gfaviz](https://github.com/ggonnella/gfaviz), 
+Is a tool to turn MSA to GFA v1 with embedded paths corrisponding to groups original sequences. Results can be then visualized with [gfaviz](https://github.com/ggonnella/gfaviz), 
 or [bandage](https://rrwick.github.io/Bandage/) or any other avialble GFA visualization tools out there.
 
-The following options are available from calling main:
-```
-usage: main.py [-h] [-f MSA_PATH] [-o OUT_GFA] [-n SEQ_NAMES] [-c COLORS]
-               [--log LOG_FILE]
+The tool is split into two separate steps, building the graph, and adding the paths.
 
-Build GFA v1 from MSA given in FASTA format
+## Building the Graph
+The following options are available for this step when calling `msa_to_gfa biuld_graph` subcommand:
+```
+usage: test_main.py build_graph [-h] [-f MSA_PATH] [--compact] [-o OUT_GFA] [-n SEQ_NAMES]
+                                [-c COLORS]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -17,19 +18,19 @@ optional arguments:
   -o OUT_GFA, --out OUT_GFA
                         Output GFA name/path
   -n SEQ_NAMES, --seq_name_tsv SEQ_NAMES
-                        A tsv with two columns, first is sequence names,
-                        second is a shortened or abbreviated name
+                        A tsv with two columns, first is sequence names, second is a shortened or
+                        abbreviated name
   -c COLORS, --nodes_info COLORS
                         Output JSON file with nodes information
-  --log LOG_FILE        Log file name/path. Default = out_log.log
+
 
 ```
-
-You simply need to provide the MSA in a FASTA format, the output file location. And in case the sequence names in the FASTA file 
-is a bit long or complicated and you want to simplify these names (because these names will be used as the path names in the GFA output) 
-, you can provide a TSV file with first column has the same sequence names in the FASTA file (without the ">") and the second column 
-is the abbreviation or the the other name you want to be used. E.g:
-
+Required arguments here are:
+- `-f, --in_msa` for input MSA in FASTA format
+- `-o, --out` for the path/name of output GFA.
+Other arguments:
+- `--compact` which is recommended to compact linear stretches of nodes in the graph
+- `-n, --seq_name_tsv` which is a TSV file with two columns, first column is the original fasta sequence ids without the ">" character, and the second column is a shorter name for the same sequences, in case the user wants to use abbreviations or a smaller sequence ids for the sequences. E.g:
 We have the following 3 amino acid sequences:
 ```
 >seq1
@@ -45,9 +46,33 @@ seq1    s1
 seq2    s2
 seq3    s3
 ```
-
-The option `-c, --nodes_info` will output a json file with each line a dictionary with
-node id, node sequence, and the sequences associated with that node. Maybe it can help identify 
-highly conserved regions (the node "colors" can help in this for example).
+- The option `-c, --nodes_info` will output a json file with information related to the nodes: node id, node sequence, and the sequences associated with that node.
+highly conserved regions will have nodes with many colors.
+  
+When running the first subcommand, you'll automatically get a JSON file containing the path and grouped paths informatin, this file is needed for the second step.
 The graph of the previous sequences would look like
 ![alt text](figures/drawing-1.png)
+
+## Adding paths
+The JSON file outputted along with the GFA file has information related to each sequencs and its path in the graph, as well, groupings of sequences that have the same path in the graph.
+The following options are available with this subcommand:
+```
+usage: test_main.py add_paths [-h] [-g GFA] [--in_groups IN_GROUPS] [--all_groups]
+                              [--some_groups SOME_GROUPS]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -g GFA, --gfa GFA     input graph to add paths to
+  --in_groups IN_GROUPS
+                        the groups json file
+  --all_groups          Adds all paths to the GFA file given
+  --some_groups SOME_GROUPS
+                        adds only the specified paths
+
+```
+Required arguments:
+- `-g, --gfa` is GFA file from the first step
+- `--in_groups` is the JSON file outputted along with the GFA file in the first step
+Optional arguments:
+-  `--all_groups` all groups are added to the graph as paths
+-  `--some_groups` user need to give a text file with one group or sequence name on each line, if abbreviated names were used in the first step, then the abbreviations need to be used

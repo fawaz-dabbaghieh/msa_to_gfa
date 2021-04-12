@@ -159,6 +159,8 @@ def main():
     #    would be interesting to have some score and have some matrix with which paths are most similar
     #    Maybe also have a report showing how two paths differ and at which bubbles
     #    so I can utilize BubbleGun as well :)
+    #    2- add the general option of having an output dir where all results are deposited there
+    #    3- also output a tsv file with group id in first column and some separator
 
     if args.subcommands == "add_paths":
 
@@ -206,8 +208,14 @@ def main():
                 with open(args.some_groups) as in_file:
                     for l in in_file:
                         current_group = l.strip()
+                        # in case the user provided a group id
                         if current_group in all_groups['groups']:
                             in_graph.groups[current_group] = all_groups['all_paths'][all_groups['groups'][current_group][0]]
+
+                        # in case the user provided a sequence id
+                        elif current_group in all_groups['all_paths']:
+                            in_graph.groups[current_group] = all_groups['all_paths'][current_group]
+
                         else:
                             print("Check warnings in log file...")
                             logging.warning(f"couldn't add the group {current_group} because it was not found in the"

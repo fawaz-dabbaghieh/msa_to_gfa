@@ -1,0 +1,7 @@
+    # todo: Either do some mappings between paths and output some kind of results
+    #    would be interesting to have some score and have some matrix with which paths are most similar
+    #    Maybe also have a report showing how two paths differ and at which bubbles
+    #    so I can utilize BubbleGun as well :)
+    #    2- add the general option of having an output dir where all results are deposited there
+    #    3- also output a tsv file with group id in first column and some separator
+
