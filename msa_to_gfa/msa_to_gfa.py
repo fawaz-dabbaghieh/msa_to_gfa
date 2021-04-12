@@ -1,9 +1,9 @@
-from .Node import Node
-from .Graph import Graph
+from msa_to_gfa.Node import Node
+from msa_to_gfa.Graph import Graph
 
 """
 The idea here is simple
-Let's take the following small examle
+Let's take the following small example
 
 01234567
 -MEPTPEQ
@@ -77,7 +77,7 @@ def sync_lists(nodes, current, previous):
         # current = [0] * len(previous)
 
 
-def msa_graph(sequences, seq_names):
+def msa_graph(sequences, groups):
     """
     build graph from MSA
 
@@ -85,7 +85,7 @@ def msa_graph(sequences, seq_names):
     the seq_names dictionary is then used, otherwise, the same seq names in FASTA are used
 
     :param sequences: sequences dictionary
-    :param seq_names: a dictionary of name of sequence in fasta file and potential shorter name
+    :param groups: a dictionary of a group number as key and members as a list as value
     """
     nodes = dict()
     previous_nodes = [0] * len(sequences)
@@ -113,14 +113,14 @@ def msa_graph(sequences, seq_names):
                     # this returns the last node created in this column with
                     # the same amino acid
                     node = nodes[already_seen[aa]]
-                    color = seq_names[seq_names_keys[i]]
+                    color = seq_names_keys[i]
                     node.colors.add(color)
                     current_nodes[i] = node.id
 
                 else:
                     # make a new node
                     node = Node(node_id, aa)
-                    color = seq_names[seq_names_keys[i]]
+                    color = seq_names_keys[i]
                     node.colors.add(color)
                     nodes[node_id] = node
                     current_nodes[i] = node_id
@@ -131,5 +131,4 @@ def msa_graph(sequences, seq_names):
 
     # syncing last column
     sync_lists(nodes, current_nodes, previous_nodes)
-    graph = Graph(nodes)
-    return graph
+    return Graph(nodes, groups)

@@ -14,9 +14,14 @@ def merge_end(nodes, n):
         # n --> child --> child's_child
         # compact
         # n + child --> child's child
+        # both n and child should have the same colors
         nodes[n].out_nodes = set()
-        for new_out in list(child.out_nodes):
-            nodes[n].out_nodes.add(new_out)
+        # todo test if this is correct
+        for new_child in list(child.out_nodes):
+            nodes[n].add_child(new_child)
+            new_child.remove_parent(child)
+
+            # nodes[n].out_nodes.add(new_out)
 
         # updating sequence of n
         # I am assuming no overlaps here
@@ -25,13 +30,12 @@ def merge_end(nodes, n):
 
         # updating the information in children of child
         # in nodes of child's child need to be updated
-        for nn in child.out_nodes:
-            # try:
-            nn.in_nodes.remove(child)
-            # except KeyError:
-            #     pdb.set_trace()
-            nn.in_nodes.add(nodes[n])
-
+        # for nn in child.out_nodes:
+        #     # try:
+        #     nn.in_nodes.remove(child)
+        #     # except KeyError:
+        #     #     pdb.set_trace()
+        #     nn.in_nodes.add(nodes[n])
         # remove the merged node
         del nodes[child.id]
 
