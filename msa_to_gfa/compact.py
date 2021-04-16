@@ -15,7 +15,7 @@ def merge_end(nodes, n):
         # compact
         # n + child --> child's child
         # both n and child should have the same colors
-        nodes[n].out_nodes = set()
+        # nodes[n].out_nodes = set()
         # todo test if this is correct
         for new_child in list(child.out_nodes):
             nodes[n].add_child(new_child)
@@ -50,7 +50,6 @@ def compact_graph(graph):
 
     :param graph: a graph object
     """
-
     # the loop is done this way because some nodes will be compacted
     # so I can't loop through graph.nodes
     list_of_nodes = list(graph.nodes.keys())

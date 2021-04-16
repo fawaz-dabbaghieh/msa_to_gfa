@@ -1,3 +1,5 @@
+import sys
+
 class Node:
     """
     A node object to store the nodes' information
@@ -25,6 +27,9 @@ class Node:
         return not self.__eq__(other)
 
     def add_child(self, child):
+        if not isinstance(child, Node):
+            print("Error!!")
+            sys.exit()
         self.out_nodes.add(child)
         child.in_nodes.add(self)
 
@@ -33,6 +38,9 @@ class Node:
         child.in_nodes.remove(self)
 
     def add_parent(self, parent):
+        if not isinstance(parent, Node):
+            print("Error!!")
+            sys.exit()
         self.in_nodes.add(parent)
         parent.out_nodes.add(self)
 

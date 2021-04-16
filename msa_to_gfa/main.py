@@ -152,7 +152,7 @@ def main():
         logging.info("sorting the graph toplogocially...")
         # I use topological sorting to write the paths in order
         graph.sort()  # topological sorting
-        output_groups_file = args.out_gfa.split(".")[0] + ".json"
+        output_groups_file = args.out_gfa.split(".")[0] + "_groups.json"
         if len(output_groups_file.split(os.path.sep)) > 1:
             pass
         else:
@@ -198,6 +198,11 @@ def main():
         if (args.some_groups is not None) and args.all_groups:
             print("Error! Please check the log file...")
             logging.error("You cannot give both --all_groups and --some_groups, you need to specify one")
+            sys.exit(1)
+
+        if (args.some_groups is None) and not args.all_groups:
+            print("Error! Please check the log file...")
+            logging.error("You need to provide either --all_groups or --some_groups")
             sys.exit(1)
 
         if args.in_groups is not None:
@@ -247,7 +252,7 @@ def main():
             pass
         else:
             out_graph_name = os.path.join(args.out_dir, out_graph_name)
-        write_gfa(in_graph, out_graph_name)
+        write_gfa(in_graph, out_graph_name, output_groups=True)
 
     logging.info("finished...")
 

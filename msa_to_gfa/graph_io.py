@@ -5,7 +5,7 @@ from msa_to_gfa.Node import Node
 from msa_to_gfa.Graph import Graph
 
 
-def write_gfa(graph, gfa_path):
+def write_gfa(graph, gfa_path, output_groups=False):
     """
     output the graph as a gfa file
 
@@ -27,20 +27,20 @@ def write_gfa(graph, gfa_path):
         f.write(line + "\n")
 
         for child in node.out_nodes:
-            edge = str("\t".join(("L", str(node.id), "+", str(child),
+            edge = str("\t".join(("L", str(node.id), "+", str(child.id),
                        "+", "0M")))
             f.write(edge + "\n")
+    if output_groups:
+        if len(graph.groups) != 0:
+            for p_name, nodes_in_path in graph.groups.items():
+                path = ["P", p_name]
+                n_nodes = len(nodes_in_path)
+                path.append("+,".join([str(x) for x in nodes_in_path]))
+                path[-1] += "+"
+                path.append(",".join(["0M"]*n_nodes))
+                path = "\t".join(path)
 
-    if len(graph.groups) != 0:
-        for p_name, nodes_in_path in graph.groups.items():
-            path = ["P", p_name]
-            n_nodes = len(nodes_in_path)
-            path.append("+,".join([str(x) for x in nodes_in_path]))
-            path[-1] += "+"
-            path.append(",".join(["0M"]*n_nodes))
-            path = "\t".join(path)
-
-            f.write(path + "\n")
+                f.write(path + "\n")
 
     f.close()
 
@@ -81,7 +81,9 @@ def read_gfa(gfa_path, colored=False):
             parent = int(e[1])
             child = int(e[3])
             if (parent in nodes) and (child in nodes):
-                nodes[parent].out_nodes.add(child)
-                nodes[child].in_nodes.add(parent)
+                nodes[parent].add_child(nodes[child])
+            else:
+                logging.warning(f"The edge between {parent} and {child} can't be added, one of these two nodes (or "
+                                f"both) do not exist")
 
     return Graph(nodes, dict())

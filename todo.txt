@@ -1,5 +1,8 @@
-todo: Either do some mappings between paths and output some kind of results
+1- Either do some mappings between paths and output some kind of results
    would be interesting to have some score and have some matrix with which paths are most similar
    Maybe also have a report showing how two paths differ and at which bubbles
    so I can utilize BubbleGun as well :)
 
+2- Output information related to the most supported walk(s)
+
+3- Maybe for each bubble/superbubble, check all possible paths, and the most supported paths (being divergent as well maybe)
