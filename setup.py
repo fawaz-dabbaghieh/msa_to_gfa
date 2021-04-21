@@ -13,15 +13,16 @@ if CURRENT_PYTHON < REQUIRED_PYTHON:
     sys.exit(1)
 
 setup(name='msa_to_gfa',
-      version='1.0.0',
+      version='1.0.1',
       description='convertes an MSA in FASTA to a GFA1 file with imbedded paths',
       author='Fawaz Dabbaghie',
       author_email='fawaz@hhu.de',
-      url='https://fawaz-dabbaghieh.github.io/',
+      url='https://github.com/fawaz-dabbaghieh/msa_to_gfa',
       packages=find_packages(),
       # scripts=['bin/main.py'],
       license="LICENSE.TXT",
       long_description=open("README.md").read(),
+      long_description_content_type='text/markdown',
 #       install_requires=["protobuf == 3.11.3",
 #                         "pystream-protobuf == 1.5.1"],
       # other arguments here...

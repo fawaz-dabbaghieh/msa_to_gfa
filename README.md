@@ -3,6 +3,7 @@ Is a tool to turn MSA to GFA v1 with embedded paths corrisponding to groups orig
 or [bandage](https://rrwick.github.io/Bandage/) or any other avialble GFA visualization tools out there.
 
 The tool is split into two separate steps, building the graph, and adding the paths.
+
 ## Global optional arguments
 Before supplying one of the subcommands, the tool takes two general arguments
 ```
