@@ -1,3 +1,6 @@
+import pdb
+
+
 def merge_end(nodes, n):
     """
     merges the end of a node if possible
@@ -15,7 +18,7 @@ def merge_end(nodes, n):
         # compact
         # n + child --> child's child
         # both n and child should have the same colors
-        # nodes[n].out_nodes = set()
+        nodes[n].out_nodes = set()
         # todo test if this is correct
         for new_child in list(child.out_nodes):
             nodes[n].add_child(new_child)
@@ -37,6 +40,10 @@ def merge_end(nodes, n):
         #     #     pdb.set_trace()
         #     nn.in_nodes.add(nodes[n])
         # remove the merged node
+        # if child.id != 1797:
+        #     del nodes[child.id]
+        # else:
+        #     pdb.set_trace()
         del nodes[child.id]
 
         return True
