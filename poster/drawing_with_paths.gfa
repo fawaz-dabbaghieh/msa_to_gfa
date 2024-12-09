@@ -1,0 +1,28 @@
+S	1	MKTII	LN:i:5
+L	1	+	6	+	0M
+L	1	+	7	+	0M
+S	6	A	LN:i:1
+L	6	+	8	+	0M
+S	7	S	LN:i:1
+L	7	+	8	+	0M
+S	8	LSYIFCL	LN:i:7
+L	8	+	16	+	0M
+L	8	+	17	+	0M
+L	8	+	15	+	0M
+S	15	S	LN:i:1
+L	15	+	18	+	0M
+S	16	A	LN:i:1
+L	16	+	18	+	0M
+S	17	Q	LN:i:1
+L	17	+	18	+	0M
+S	18	LGQDLPGNDNST	LN:i:12
+L	18	+	30	+	0M
+L	18	+	31	+	0M
+S	30	P	LN:i:1
+L	30	+	32	+	0M
+S	31	A	LN:i:1
+L	31	+	32	+	0M
+S	32	TLCLGHHA	LN:i:8
+P	group_0	1+,6+,8+,15+,18+,30+,32+	0M,0M,0M,0M,0M,0M,0M
+P	group_1	1+,7+,8+,16+,18+,30+,32+	0M,0M,0M,0M,0M,0M,0M
+P	group_2	1+,7+,8+,17+,18+,31+,32+	0M,0M,0M,0M,0M,0M,0M
